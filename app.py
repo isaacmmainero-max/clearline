@@ -36,12 +36,12 @@ else:
     with st.spinner("Analyzing document structure and checking compliance rules..."):
         try:
             client = Anthropic(api_key=api_key)
-            system_prompt = \"\"\"You are 'ClearLine', an expert AI mortgage compliance analyst and consumer advocate. 
+            system_prompt = """You are 'ClearLine', an expert AI mortgage compliance analyst and consumer advocate. 
 Your task is to analyze the provided text of a TRID Loan Estimate (LE) or Closing Disclosure (CD).
-Extract all financial values, fees, and tolerance buckets strictly into a valid JSON schema format containing loan_overview, closing_costs_summary, and fee_tolerance_buckets.\"\"\"
+Extract all financial values, fees, and tolerance buckets strictly into a valid JSON schema format containing loan_overview, closing_costs_summary, and fee_tolerance_buckets."""
 
             response = client.messages.create(
-                model="claude-sonnet-5",
+                model="claude-3-5-sonnet-20241022",
                 max_tokens=1500,
                 system=system_prompt,
                 messages=[{"role": "user", "content": f"Please parse this mortgage document text:\n\n{raw_doc_text}"}]
