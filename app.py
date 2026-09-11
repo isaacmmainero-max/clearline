@@ -19,8 +19,8 @@ else:
         try:
             client = Anthropic(api_key=api_key)
             system_prompt = """You are 'ClearLine', an expert AI mortgage compliance analyst and consumer advocate. 
-            Your task is to analyze the provided text of a TRID Loan Estimate (LE) or Closing Disclosure (CD).
-            Extract all financial values, fees, and tolerance buckets strictly into a valid JSON schema format containing loan_overview, closing_costs_summary, and fee_tolerance_buckets."""
+Your task is to analyze the provided text of a TRID Loan Estimate (LE) or Closing Disclosure (CD).
+Extract all financial values, fees, and tolerance buckets strictly into a valid JSON schema format containing loan_overview, closing_costs_summary, and fee_tolerance_buckets."""
 
             response = client.messages.create(
                 model="claude-3-5-sonnet-20241022",
