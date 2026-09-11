@@ -41,7 +41,7 @@ Your task is to analyze the provided text of a TRID Loan Estimate (LE) or Closin
 Extract all financial values, fees, and tolerance buckets strictly into a valid JSON schema format containing loan_overview, closing_costs_summary, and fee_tolerance_buckets."""
 
             response = client.messages.create(
-                model="claude-3-5-sonnet-20241022",
+                model="claude-3-5-sonnet-latest",
                 max_tokens=1500,
                 system=system_prompt,
                 messages=[{"role": "user", "content": f"Please parse this mortgage document text:\n\n{raw_doc_text}"}]
