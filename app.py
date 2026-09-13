@@ -5,9 +5,7 @@ from pypdf import PdfReader
 
 st.set_page_config(page_title="ClearLine - Mortgage Document Analyzer", layout="wide")
 st.title("ClearLine: Interactive Mortgage Disclosure & Compliance Companion")
-st.markdown("Upload your Loan Estimate (LE) or Closing Disclosure (CD) PDF, or paste the text below for an instant compliance audit.")
-
-api_key = st.secrets.get("ANTHROPIC_API_KEY", "")
+st.markdown("Upload your Loan Estimate (LE) or Closing Disclosure (CD) PDF for an instant compliance audit.")
 
 uploaded_file = st.file_uploader("Upload Mortgage Document (PDF)", type=["pdf"])
 
@@ -26,13 +24,12 @@ else:
     raw_doc_text = st.text_area("Or Paste Raw Document Text Here:", height=200)
 
 if st.button("Analyze Document", type="primary"):
-    if not api_key:
-        st.error("Please add your ANTHROPIC_API_KEY to your Streamlit secrets.")
-    elif not raw_doc_text:
-        st.warning("Please upload a PDF or enter some document text to analyze.")
+    if not raw_doc_text:
+        st.warning("Please upload a PDF or enter document text to analyze.")
     else:
         with st.spinner("Analyzing document structure and checking compliance rules..."):
             try:
+                api_key = st.secrets["ANTHROPIC_API_KEY"]
                 client = Anthropic(api_key=api_key)
                 system_prompt = (
                     "You are 'ClearLine', an expert AI mortgage compliance analyst and consumer advocate. "
