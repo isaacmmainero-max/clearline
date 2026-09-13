@@ -39,7 +39,7 @@ if st.button("Analyze Document", type="primary"):
                 )
 
                 response = client.messages.create(
-                    model="claude-3-5-sonnet-latest",
+                    model="claude-3-5-sonnet-20241022",
                     max_tokens=1500,
                     system=system_prompt,
                     messages=[{"role": "user", "content": f"Please parse this mortgage document text:\n\n{raw_doc_text}"}]
