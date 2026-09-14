@@ -1,6 +1,6 @@
-﻿import json
+import json
 import streamlit as st
-from anthropic import Anthropic
+from openai import OpenAI
 from pypdf import PdfReader
 
 st.set_page_config(page_title="ClearLine - Mortgage Document Analyzer", layout="wide")
@@ -29,8 +29,7 @@ if st.button("Analyze Document", type="primary"):
     else:
         with st.spinner("Analyzing document structure and checking compliance rules..."):
             try:
-                api_key = st.secrets["ANTHROPIC_API_KEY"]
-                client = Anthropic(api_key=api_key)
+                client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
                 system_prompt = (
                     "You are 'ClearLine', an expert AI mortgage compliance analyst and consumer advocate. "
                     "Your task is to analyze the provided text of a TRID Loan Estimate (LE) or Closing Disclosure (CD). "
@@ -38,14 +37,16 @@ if st.button("Analyze Document", type="primary"):
                     "containing loan_overview, closing_costs_summary, and fee_tolerance_buckets."
                 )
 
-                response = client.messages.create(
-                    model="claude-3-5-sonnet-20241022",
-                    max_tokens=1500,
-                    system=system_prompt,
-                    messages=[{"role": "user", "content": f"Please parse this mortgage document text:\n\n{raw_doc_text}"}]
+                response = client.chat.completions.create(
+                    model="gpt-4o-mini",
+                    messages=[
+                        {"role": "system", "content": system_prompt},
+                        {"role": "user", "content": f"Please parse this mortgage document text:\n\n{raw_doc_text}"}
+                    ],
+                    temperature=0.2
                 )
                 
                 st.subheader("Analysis Results & Compliance Audit")
-                st.code(response.content[0].text, language="json")
+                st.code(response.choices[0].message.content, language="json")
             except Exception as e:
                 st.error(f"An error occurred during analysis: {e}")
